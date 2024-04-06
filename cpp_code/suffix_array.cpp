@@ -5,21 +5,21 @@ bool suffix_array::cmp(ull x, ull y, ull w) {
 }
 bool suffix_array::cmp(const ull &pos, const std::string &t) { 
     // 比较 s[pos:] 和 t 的关系，小于返回 true，大于等于返回 false
-    for (ull i = 0;i < t.size();i++) {
+    for (ull i = 0; i < t.size(); i++) {
         if (pos + i >= s.size())
             return true;
         if (s[pos + i] != t[i])
-            return s[pos + i] < t[i];
+            return (unsigned char)s[pos + i] < (unsigned char)t[i];
     }
     return false;
 }
 bool suffix_array::cmp(const std::string &t, const ull &pos) { 
     // 比较 t 和 s[pos:] 的关系，小于返回 true，大于等于返回 false
-    for (ull i = 0;i < t.size();i++) {
+    for (ull i = 0; i < t.size(); i++) {
         if (pos + i >= s.size())
             return false;
         if (t[i] != s[pos + i])
-            return t[i] < s[pos + i];
+            return (unsigned char)t[i] < (unsigned char)s[pos + i];
     }
     return false;
 }
@@ -116,12 +116,14 @@ ull suffix_array::get_rank(ull suf_id) { // 0-index
 ull suffix_array::lower_bound(const std::string &t) {
     ull l = 1, r = size() + 1; // rank
     while (l < r) {
-        ull mid = (l + r)>>1;
+        ull mid = (l + r) >> 1;
+        // std::cout << "\"" << get_suf(mid) << "\"" << "\n";
         if (mid != size() + 1 && cmp(get_id(mid), t))
             l = mid + 1;
         else
             r = mid;
     }
+    // std::cout << "\"" << get_suf(l) << "\"" << "\n";
     return l;
 }
 ull suffix_array::upper_bound(const std::string &t) {
@@ -147,7 +149,7 @@ std::vector<std::pair<std::string, double>> suffix_array::get_prob(const std::st
     // 使用倍增法
     while (p < r) {
         ull L = p, R = r; 
-        ull len = utf8_get_len(s[get_id(p)]); // 确保截断的下一 token 为合法 utf8 字符
+        ull len = utf8_get_len(s[get_id(p) + t.size()]); // 确保截断的下一 token 为合法 utf8 字符
         std::string sub = s.substr(get_id(p), t.size() + len);
         // std::cout << sub << std::endl;
         while (L < R) { // L 为第一个后缀大于当前子串的 rank
