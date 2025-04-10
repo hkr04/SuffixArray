@@ -1,0 +1,48 @@
+# Extensions
+
+*.a
+*.bat
+*.bin
+*.d
+*.dll
+*.dot
+*.etag
+*.exe
+*.gcda
+*.gcno
+*.gcov
+*.gguf
+*.gguf.json
+*.lastModified
+*.log
+*.metallib
+*.o
+*.so
+*.tmp
+
+# IDE / OS
+
+.cache/
+.ccls-cache/
+.direnv/
+.DS_Store
+.envrc
+.idea/
+.swiftpm
+.vs/
+.vscode/
+nppBackup
+
+# Build Artifacts
+
+.build/
+build*
+out/
+tmp/
+
+# Python
+
+/.venv
+__pycache__/
+*/poetry.lock
+poetry.toml

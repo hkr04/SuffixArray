@@ -5,7 +5,7 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp.map cimport pair
 
-cdef extern from "cpp_code/suffix_array.h":
+cdef extern from "src/suffix_array.h":
     cdef cppclass suffix_array:
         suffix_array() except +
         suffix_array(string s) except +

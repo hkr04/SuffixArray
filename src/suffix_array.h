@@ -18,7 +18,7 @@ private:
     bool cmp(const std::string &t, const ull &pos);
     ull lower_bound(const std::string &t);
     ull upper_bound(const std::string &t);
-    ull utf8_get_len(const unsigned char &byte);
+    static ull utf8_get_len(const unsigned char &byte);
 public:
     suffix_array();
     suffix_array(std::string s); 

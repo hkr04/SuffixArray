@@ -185,7 +185,7 @@ double suffix_array::get_mutual_information(const std::string &t) {
     ull total = size(); // 字的总数
     double log_count = log(count), log_total = log(total);
     double pmi = 1e60;
-    for (ull i = 1; i <= t.size() - 1; i++) {
+    for (ull i = utf8_get_len(t[0]); i < t.size(); i += utf8_get_len(t[i])) {
         pmi = std::min(pmi, log_total + log_count - log(get_count(t.substr(0, i))) - log(get_count(t.substr(i))));
     }
     return pmi;
