@@ -5,21 +5,25 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp.map cimport pair
 
-cdef extern from "src/suffix_array.h":
-    cdef cppclass suffix_array:
-        suffix_array() except +
-        suffix_array(string s) except +
-        int size() except +
-        int get_id(int suf_rank) except +
-        string get_suf(int suf_rank) except +
-        int get_rank(int suf_id) except +
-        int get_count(const string &t) except +
-        vector[pair[string, double]] get_prob(const string &t) except +
-        double get_branch_entropy(const string &t) except +
-        double get_mutual_information(const string &t) except +
+cdef extern from "stdint.h":
+    ctypedef unsigned char uint8_t
+    ctypedef unsigned long long uint64_t
+
+cdef extern from "src/suffix_array.h" namespace "suffix_array":
+    cdef cppclass SuffixArrayImpl "suffix_array::SuffixArray":
+        SuffixArrayImpl() except +
+        SuffixArrayImpl(const string& s) except +
+        uint64_t size() except +
+        uint64_t get_id(uint64_t suf_rank) except +
+        string get_suf(uint64_t suf_rank) except +
+        uint64_t get_rank(uint64_t suf_id) except +
+        uint64_t get_count(const string& t) except +
+        vector[pair[string, double]] get_prob(const string& t) except +
+        double get_branch_entropy(const string& t) except +
+        double get_mutual_information(const string& t) except +
 
 cdef class SuffixArray:
-    cdef suffix_array* sa
+    cdef SuffixArrayImpl* sa
 
     def __cinit__(self, file_paths = None, text = None):
         if not file_paths and not text:
@@ -32,7 +36,7 @@ cdef class SuffixArray:
             for file_path in file_paths:
                 with open(file_path, 'r', encoding='utf-8') as file:
                     text += file.read() + "\n"
-        self.sa = new suffix_array(text.encode('utf-8'))
+        self.sa = new SuffixArrayImpl(text.encode('utf-8'))
 
 
     def __dealloc__(self):
